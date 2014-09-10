@@ -1,29 +1,14 @@
-require 'paperclip'
-require 'paperclip/railtie'
-require 'phantom_svg'
 require 'rspec'
+require 'paperclip'
+require 'paperclip/phantom_svg'
 require 'active_record'
 
-# Connect to sqlite
-ActiveRecord::Base.establish_connection(
-  adapter: 'sqlite3',
-  database: ':memory:'
-)
+def attachment(options={})
+  Paperclip::Attachment.new(:phantom, DummyPhantom.new, options)
+end
 
-ActiveRecord::Base.logger = Logger.new(nil)
-load(File.join(File.dirname(__FILE__), 'schema.rb'))
-
-Paperclip::Railtie.insert
-
-class Document < ActiveRecord::Base
-  has_attached_file :original,
-    :storage => :filesystem,
-    :path => "./spec/tmp/:id.:extension",
-    :url => "/spec/tmp/:id.:extension",
-    :styles => {
-      svg: 'true', px32: '32x32', px128: '128x128'
-    },
-    :processors => [:phantom_svg]
+def fixture_file(filename)
+  File.join(File.dirname(__FILE__), 'fixtures', filename)
 end
 
 def clear_tmp

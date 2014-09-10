@@ -3,7 +3,7 @@ require 'paperclip'
 
 module Paperclip
   # Phantom SVG processor for Paperclip
-  class PhantomSVGProcessor < Processor
+  class PhantomSVG < Processor
     attr_accessor :src, :options, :attachment
     
     def initialize(file, options = {}, attachment = nil)

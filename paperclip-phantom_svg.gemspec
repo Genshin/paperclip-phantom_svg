@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.platform      = Gem::Platform::RUBY
-  s.name          = 'phantom_svg-paperclip-processor'
+  s.name          = 'paperclip-phantom_svg'
   s.version       = '0.0.1'
   s.license       = 'LGPL-3.0'
   s.summary       = 'SVG and Raster (primarily PNG) conerters for Paperclip' \

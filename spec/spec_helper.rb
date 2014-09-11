@@ -1,6 +1,5 @@
 require 'rspec'
-require 'paperclip'
-require 'paperclip/phantom_svg'
+require 'paperclip-phantom_svg'
 require 'active_record'
 
 def attachment(options={})

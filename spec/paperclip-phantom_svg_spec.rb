@@ -1,38 +1,37 @@
 require 'spec_helper'
 
-describe Paperclip::PhantomSVG do
+describe Paperclip::PhantomProcessor do
   before(:all) do
     clear_tmp
   end
 
   let(:svg_source) { File.new(fixture_file('compiled.svg')) }
   let(:png_source) { File.new(fixture_file('apngasm.png')) }
-  let(:test_options) { { formats: [:svg, :png], sizes: {px32: '32x32', 
-                                                        px128: { height: 128, width: 128 },
-                                                        px64h: '64',
-                                                        px16w: '16x',
-                                                        px8h: 'x8' } } }
+  let(:test_options_svg) { { output_name: 'test_svg', format: :svg } }
+  let(:test_options_png) { { output_name: 'test_png', format: :png, height: 128, width: 128 } }
+  let(:test_options_png_h) { { output_name: 'test_png_h', format: :png, height: 64 } }
 
   describe '.new' do
-    let(:test_instance) { Paperclip::PhantomSVG.new(svg_source, test_options) }
+    let(:test_instance) { Paperclip::PhantomProcessor.new(svg_source, test_options_png) }
 
     it 'properly instantiates' do
-      expect(test_instance).to be_an_instance_of(Paperclip::PhantomSVG)
+      expect(test_instance).to be_an_instance_of(Paperclip::PhantomProcessor)
     end
 
     it 'properly parses format and size options' do
-      expect(test_instance.raster_formats).to include(:png)
-      expect(test_instance.raster_sizes).to
+      expect(test_instance.format).to be(:png)
+      expect(test_instance.height).to be(128)
     end
   end
 
   context 'with an animated SVG source' do
-    let(:svg_processor) { Paperclip::PhantomSVG.new(svg_source, test_options) }
+    let(:svg_processor) { Paperclip::PhantomProcessor.new(svg_source, test_options_svg) }
 
-    describe 'create' do
+    describe '.make' do
+      clear_tmp
       it 'copies the source SVG as a base, then creates sized PNGs' do
-        svg_processor.create
-        expect(File.exist?(Dir.pwd + '/spec/dummy/public/px32/compiled.png')).to be_true
+        expect(svg_processor.make).to be_an_instance_of(Paperclip::Tempfile)
+        expect(File).to exist(svg_processor.dst.path)
       end 
     end
   end

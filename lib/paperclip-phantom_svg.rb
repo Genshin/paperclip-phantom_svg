@@ -1,2 +1,2 @@
 require 'paperclip'
-require 'paperclip_processors/phantom_svg'
+require 'paperclip_processors/phantom_processor'

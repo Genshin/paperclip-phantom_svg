@@ -38,7 +38,12 @@ module Paperclip
     end
 
     def _create_png
-      
+      @dst = Tempfile.new([@output_name, '.png'])
+      Paperclip.log "[PhantomSVG] Creating SVG #{@output_name} @ #{@height}x#{@width}" if @whiny
+      @svg.height = @height if @height
+      @svg.width = @width if @width
+      @svg.save_apng(@dst.path)
+      @dst
     end
   end
 end

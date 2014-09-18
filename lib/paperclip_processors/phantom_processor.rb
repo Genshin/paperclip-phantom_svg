@@ -7,43 +7,40 @@ module Paperclip
     attr_accessor :format, :height, :width, :dst
     def initialize(file, options = {}, attachment = nil)
       super
-      @src = file
-      @options = options
-      @format = options[:format] || :svg
-      @height = options[:height] || 64
-      @width = options[:width] || 64
-      @attachment = attachment
+      @format = options.fetch(:format, :svg)
+      @height = options.fetch(:height, 64)
+      @width = options.fetch(:width, 64)
+
       @base_name = File.basename(@file.path, '.*')
-      @ouput_name = options[:output_name] || @base_name
+      @ouput_name = options.fetch(:output_name, @base_name)
       @svg = Phantom::SVG::Base.new(@file.path)
     end
 
     def make
-      Paperclip.log "[PhantomSVG] Making #{@output_name}" if @whiny
-      case @format
-      when :svg
-        return _create_svg
-      when :png
-        return _create_png
+      case @format.to_sym
+      when  :svg then _create_svg
+      when  :png then _create_png
+      else
+        raise 'Format not supported'
       end
     end
 
     private
 
     def _create_svg
-      @dst = Tempfile.new([@output_name, '.svg'])
-      Paperclip.log "[PhantomSVG] Creating SVG #{@output_name}" if @whiny
-      @svg.save_svg(dst.path)
-      @dst
+      @dst = Tempfile.new([@output_name, '.svg']).tap do |file|
+        Paperclip.log "[PhantomSVG] Creating SVG #{@output_name}" if @whiny
+        @svg.save_svg(file.path)
+      end
     end
 
     def _create_png
-      @dst = Tempfile.new([@output_name, '.png'])
-      Paperclip.log "[PhantomSVG] Creating SVG #{@output_name} @ #{@height}x#{@width}" if @whiny
-      @svg.height = @height if @height
-      @svg.width = @width if @width
-      @svg.save_apng(@dst.path)
-      @dst
+      @dst = Tempfile.new([@output_name, '.png']).tap do |file|
+        Paperclip.log "[PhantomSVG] Creating SVG #{@output_name} @ #{@height}x#{@width}" if @whiny
+        @svg.height = @height if @height
+        @svg.width = @width if @width
+        @svg.save_apng(file.path)
+      end
     end
   end
 end

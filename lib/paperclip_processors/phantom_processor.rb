@@ -4,7 +4,7 @@ require 'paperclip'
 module Paperclip
   # Phantom SVG processor for Paperclip
   class PhantomProcessor < Processor
-    attr_accessor :format, :height, :width, :dst
+    attr_accessor :format, :height, :width, :dst, :file
     def initialize(file, options = {}, attachment = nil)
       super
       @format = options.fetch(:format, :svg)
@@ -28,20 +28,20 @@ module Paperclip
     private
 
     def _create_svg
-      @dst = Tempfile.new([@output_name, '.svg']).tap do |file|
+      @dst = Tempfile.new([@output_name, '.svg']).tap do |dst|
         Paperclip.log "[PhantomSVG] Creating SVG #{@output_name}" if @whiny
-        @svg.height = @height if @height
-        @svg.width = @width if @width
-        @svg.save_svg(file.path)
+        @svg.height = height
+        @svg.width = width
+        @svg.save_svg(dst.path)
       end
     end
 
     def _create_png
-      @dst = Tempfile.new([@output_name, '.png']).tap do |file|
-        Paperclip.log "[PhantomSVG] Creating SVG #{@output_name} @ #{@height}x#{@width}" if @whiny
-        @svg.height = @height if @height
-        @svg.width = @width if @width
-        @svg.save_apng(file.path)
+      @dst = Tempfile.new([@output_name, '.png']).tap do |dst|
+        Paperclip.log "[PhantomSVG] Creating PNG #{@output_name} @ #{@height}x#{@width}" if @whiny
+        @svg.height = height
+        @svg.width = width
+        @svg.save_apng(dst.path)
       end
     end
   end

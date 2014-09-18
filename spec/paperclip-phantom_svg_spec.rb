@@ -30,6 +30,7 @@ describe Paperclip::PhantomProcessor do
         processor = Paperclip::PhantomProcessor.new(svg_source, test_options_svg)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
+        FileUtils.copy(processor.dst.path, 'tmp/')
       end
     end
 
@@ -38,40 +39,55 @@ describe Paperclip::PhantomProcessor do
         processor = Paperclip::PhantomProcessor.new(svg_source, test_options_png)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
+        FileUtils.copy(processor.dst.path, 'tmp/')
       end
     end
 
     describe '.make({format: :png, height: 64})' do
-      it 'saves a PNG from an SVG' do
+      it 'saves a PNG with height only specefied from an SVG' do
         processor = Paperclip::PhantomProcessor.new(svg_source, test_options_png_h)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
+        FileUtils.copy(processor.dst.path, 'tmp/')
       end
     end
   end
   
   context 'with an animated PNG source' do
     describe '.make({format: :svg})' do
-      it 'saves an SVG from an SVG' do
+      it 'saves an SVG from a PNG' do
         processor = Paperclip::PhantomProcessor.new(png_source, test_options_svg)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
+        FileUtils.copy(processor.dst.path, 'tmp/')
       end
     end
 
     describe '.make({format: :png, height: 128, width: 128})' do
-      it 'saves a PNG from an SVG' do
+      it 'saves a PNG from an PNG' do
         processor = Paperclip::PhantomProcessor.new(png_source, test_options_png)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
+        FileUtils.copy(processor.dst.path, 'tmp/')
       end
     end
 
     describe '.make({format: :png, height: 64})' do
-      it 'saves a PNG from an SVG' do
+      it 'saves a PNG with only height specified from a PNG' do
         processor = Paperclip::PhantomProcessor.new(png_source, test_options_png_h)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
+        FileUtils.copy(processor.dst.path, 'tmp/')
+      end
+    end
+
+    describe '.make({format: :png, height: 12, width: 12})' do
+      it 'saves a small PNG from a PNG' do
+        processor = Paperclip::PhantomProcessor.new(png_source,
+                                                    { format: :png, height: 12, width: 12 })
+        expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
+        expect(File).to exist(processor.dst.path)
+        FileUtils.copy(processor.dst.path, 'tmp/')
       end
     end
   end

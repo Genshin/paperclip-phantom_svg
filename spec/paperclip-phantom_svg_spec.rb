@@ -91,5 +91,15 @@ describe Paperclip::PhantomProcessor do
         FileUtils.copy(processor.dst.path, 'tmp/')
       end
     end
+
+    describe '.make({format: :svg, height: 12, width: 12})' do
+      it 'saves a small SVG from a PNG' do
+        processor = Paperclip::PhantomProcessor.new(png_source,
+                                                    { format: :svg, height: 12, width: 12 })
+        expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
+        expect(File).to exist(processor.dst.path)
+        FileUtils.copy(processor.dst.path, 'tmp/')
+      end
+    end
   end
 end

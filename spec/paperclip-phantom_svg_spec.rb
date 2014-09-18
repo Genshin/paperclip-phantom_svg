@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Paperclip::PhantomProcessor do
   before(:all) do
     clear_tmp
+    FileUtils::mkdir_p 'tmp/'
   end
 
   let(:svg_source) { File.new(fixture_file('compiled.svg')) }

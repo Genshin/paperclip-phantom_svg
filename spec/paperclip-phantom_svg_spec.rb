@@ -30,7 +30,7 @@ describe Paperclip::PhantomProcessor do
         processor = Paperclip::PhantomProcessor.new(svg_source, test_options_svg)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
-      end 
+      end
     end
 
     describe '.make({format: :png, height: 128, width: 128})' do
@@ -38,7 +38,7 @@ describe Paperclip::PhantomProcessor do
         processor = Paperclip::PhantomProcessor.new(svg_source, test_options_png)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
-      end 
+      end
     end
 
     describe '.make({format: :png, height: 64})' do
@@ -46,7 +46,7 @@ describe Paperclip::PhantomProcessor do
         processor = Paperclip::PhantomProcessor.new(svg_source, test_options_png_h)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
-      end 
+      end
     end
   end
   
@@ -56,7 +56,7 @@ describe Paperclip::PhantomProcessor do
         processor = Paperclip::PhantomProcessor.new(png_source, test_options_svg)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
-      end 
+      end
     end
 
     describe '.make({format: :png, height: 128, width: 128})' do
@@ -64,7 +64,7 @@ describe Paperclip::PhantomProcessor do
         processor = Paperclip::PhantomProcessor.new(png_source, test_options_png)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
-      end 
+      end
     end
 
     describe '.make({format: :png, height: 64})' do
@@ -72,7 +72,7 @@ describe Paperclip::PhantomProcessor do
         processor = Paperclip::PhantomProcessor.new(png_source, test_options_png_h)
         expect(processor.make).to be_an_instance_of(Paperclip::Tempfile)
         expect(File).to exist(processor.dst.path)
-      end 
+      end
     end
   end
 end

@@ -30,6 +30,8 @@ module Paperclip
     def _create_svg
       @dst = Tempfile.new([@output_name, '.svg']).tap do |file|
         Paperclip.log "[PhantomSVG] Creating SVG #{@output_name}" if @whiny
+        @svg.height = @height if @height
+        @svg.width = @width if @width
         @svg.save_svg(file.path)
       end
     end

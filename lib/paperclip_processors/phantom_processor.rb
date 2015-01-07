@@ -5,6 +5,7 @@ module Paperclip
   # Phantom SVG processor for Paperclip
   class PhantomProcessor < Processor
     attr_accessor :format, :height, :width, :dst
+
     def initialize(file, options = {}, attachment = nil)
       super
       @src = file
@@ -14,7 +15,7 @@ module Paperclip
       @width = options[:width] || 64
       @attachment = attachment
       @base_name = File.basename(@file.path, '.*')
-      @ouput_name = options[:output_name] || @base_name
+      @name = options[:output_name] || @base_name
       @svg = Phantom::SVG::Base.new(@file.path)
     end
 
@@ -31,14 +32,14 @@ module Paperclip
     private
 
     def _create_svg
-      @dst = Tempfile.new([@output_name, '.svg'])
+      @dst = Tempfile.new([@name, '.svg'])
       Paperclip.log "[PhantomSVG] Creating SVG #{@output_name}" if @whiny
       @svg.save_svg(dst.path)
       @dst
     end
 
     def _create_png
-      @dst = Tempfile.new([@output_name, '.png'])
+      @dst = Tempfile.new([@name, '.png'])
       Paperclip.log "[PhantomSVG] Creating SVG #{@output_name} @ #{@height}x#{@width}" if @whiny
       @svg.height = @height if @height
       @svg.width = @width if @width

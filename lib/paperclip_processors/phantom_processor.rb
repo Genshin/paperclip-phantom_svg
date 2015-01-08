@@ -12,7 +12,7 @@ module Paperclip
       @width = options.fetch(:width, 64)
 
       @base_name = File.basename(@file.path, '.*')
-      @ouput_name = options.fetch(:output_name, @base_name)
+      @name = options[:output_name] || @base_name
       @svg = Phantom::SVG::Base.new(@file.path)
     end
 
@@ -28,7 +28,7 @@ module Paperclip
     private
 
     def _create_svg
-      @dst = Tempfile.new([@output_name, '.svg']).tap do |dst|
+      @dst = Tempfile.new([@name, '.svg']).tap do |dst|
         Paperclip.log "[PhantomSVG] Creating SVG #{@output_name}" if @whiny
         @svg.height = height
         @svg.width = width
@@ -37,7 +37,7 @@ module Paperclip
     end
 
     def _create_png
-      @dst = Tempfile.new([@output_name, '.png']).tap do |dst|
+      @dst = Tempfile.new([@name, '.png']).tap do |dst|
         Paperclip.log "[PhantomSVG] Creating PNG #{@output_name} @ #{@height}x#{@width}" if @whiny
         @svg.height = height
         @svg.width = width

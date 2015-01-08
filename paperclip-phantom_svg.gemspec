@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'paperclip', '~> 4.2', '~> 4.2.1'
   s.add_dependency 'phantom_svg', '~> 1.1', '~> 1.1.5'
 
-  s.add_development_dependency 'bundler'
+  s.add_development_dependency 'bundler', '~> 1.7'
   s.add_development_dependency 'rspec', '~> 3.1'
   s.add_development_dependency 'activerecord', '~> 4.1'
   s.add_development_dependency 'sqlite3', '~> 1.3'

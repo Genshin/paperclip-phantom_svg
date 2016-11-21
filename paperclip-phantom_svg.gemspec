@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split($RS)
   s.test_files = s.files.grep(/^spec\//)
   s.require_paths = ['lib']
-
-  s.add_dependency 'paperclip', '~> 4.2', '~> 4.2.1'
+  
+  s.add_dependency 'paperclip', '~> 5.1'
   s.add_dependency 'phantom_svg', '~> 1.2', '~> 1.2.0'
 
   s.add_development_dependency 'bundler', '~> 1.9'
